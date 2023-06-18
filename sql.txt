@@ -1,0 +1,9 @@
+/data/user/0/com.example.game_of_life/databases
+
+adb -s emulator-554 shell
+
+run-as com.example.game_of_life
+
+cd /data/user/0/com.example.game_of_life/databases
+
+sqlite3 quest.db
