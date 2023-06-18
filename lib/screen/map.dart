@@ -6,6 +6,7 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'map/app_lat_long.dart';
 import 'map/location_service.dart';
 
+import 'package:uuid/uuid.dart';
 /*
 class map_page extends StatelessWidget {
   const map_page({Key? key}) : super(key: key);
@@ -31,6 +32,9 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final mapControllerCompleter = Completer<YandexMapController>();
+  final List<MapObject> mapObjects = [];
+  final MapObjectId mapObjectId = MapObjectId(Uuid().v1());
+  //final MapObjectId mapObjectId = MapObjectId('placemark_$counter'); //late?
 
   @override
   void initState() {
@@ -42,14 +46,52 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Текущее местоположение'),
+        title: const Text('Добавьте точку'),
       ),
       body: YandexMap(
-        onMapCreated: (controller) {
+          mapObjects: mapObjects,
+          onMapCreated: (controller) {
           mapControllerCompleter.complete(controller);
         },
+          onMapTap: (Point point) async {
+            print('Tapped map at $point');
+            //print(mapObjectId);
+            final mapObject = PlacemarkMapObject(
+                mapId: mapObjectId,
+                point: point,
+                onTap: (PlacemarkMapObject self, Point point) => print('Tapped me at $point'),
+                isDraggable: true,
+                onDragStart: (_) => print('Drag start'),
+                onDrag: (_, Point point) => print('Drag at point $point'),
+                onDragEnd: (_) => print('Drag end'),
+                icon: PlacemarkIcon.single(PlacemarkIconStyle(
+                    image: BitmapDescriptor.fromAssetImage('assets/place.png')
+                ))
+            );
+            setState(() {
+              mapObjects.add(mapObject);
+            });
+            //print(mapObjects);
+          }
+      ),
+      floatingActionButton: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: _addMark)
+        ],
       ),
     );
+  }
+  // Future<AppLatLong> _onMapTap: (Point point) async {
+  // print('Tapped map at $point');
+  //
+  // await controller.deselectGeoObject();
+  //}
+  Future<void> _addMark() async {
+
+    await _fetchCurrentLocation();
   }
 
   Future<void> _initPermission() async {
@@ -86,5 +128,6 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   }
+
 }
 
