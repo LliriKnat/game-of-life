@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Основная страница с текущим заданием и инвентарем
     profile_page(),
     // Страница 2
-    map_page(),
+    MapPage(),
     // Страница создания квестов а так же расстановки их в расспсание
     quests_page(),
     // ...
