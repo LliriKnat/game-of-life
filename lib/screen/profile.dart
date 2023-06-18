@@ -3,21 +3,44 @@ import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:game_of_life/data/quest_db.dart';
 import 'package:game_of_life/model/inventory_model.dart';
 import 'package:game_of_life/model/quest_model.dart';
+import 'package:game_of_life/screen/text_api/text_api.dart';
+import 'package:game_of_life/screen/text_api/text_model.dart';
 import 'package:game_of_life/widget/current_quest_card.dart';
 
 import '../widget/item_widget.dart';
 import '../widget/quest_card.dart';
 
-a() {}
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
-class profile_page extends StatelessWidget {
-  const profile_page({Key? key}) : super(key: key);
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Quotes? data;
 
   @override
   Widget build(BuildContext context) {
+
+    Future<Null> getQuotes() async {
+      data = await Api.getQuotes();
+      setState(() {});
+    }
+
+    void Function() pressedInventory(Inventory item) {
+      void f(){
+        print(item.id);
+      }
+      return f;
+    }
+
+    Widget EmptyList() => Text('Пока наград нет');
+
     /// Соберем эту страницу через центр
     /// При этом соберем ее в column and rows
     return Scaffold(
+
         backgroundColor: Color(0xff2D2D2D),
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(65),
@@ -29,12 +52,14 @@ class profile_page extends StatelessWidget {
                 color: Color(0xff4D000000),
                 spreadRadius: 11,
                 blurRadius: 4,
-                offset: Offset(0, 4), // changes position of shadow
+                offset: Offset(0, 4),
+                // changes position of shadow
               ),
             ]),
             child: Padding(
               padding: const EdgeInsets.only(right: 15.0),
               child: Row(
+
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Иконка пользователя с его именем
@@ -45,6 +70,7 @@ class profile_page extends StatelessWidget {
                       height: 50,
                       color: const Color(0xff4180BA).withOpacity(0.6),
                       blur: 6,
+
                       child: Container(
                         width: 170,
                         height: 45,
@@ -137,28 +163,38 @@ class profile_page extends StatelessWidget {
                       color: Colors.white,
                       fit: BoxFit.fitWidth,
                       alignment: AlignmentDirectional.center,
+
                     ),
                     const Spacer(),
+
                     Column(children: [
                       /// блок цитатника
-                      Container(
-                        width: 200,
-                        height: 155,
-                        alignment: AlignmentDirectional.center,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: const Color(0xff818181),
-                            ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5))),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                              'Если мечты не пугают, то они слишком малы',
-                              textAlign: TextAlign.center),
+
+                      GestureDetector(
+                        onTap: () {
+                          //print("Click event on Container");
+                          getQuotes();
+                        },
+                        child: Container(
+                          width: 200,
+                          height: 155,
+                          alignment: AlignmentDirectional.center,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 2,
+                                color: const Color(0xff818181),
+                              ),
+                              borderRadius:
+                              const BorderRadius.all(Radius.circular(5))),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                                data?.content ?? "Keep on coding, baby!.",
+                                textAlign: TextAlign.center),
+                          ),
                         ),
                       ),
+
 
                       /// Инвентарь
                       Padding(
@@ -214,12 +250,4 @@ class profile_page extends StatelessWidget {
           ),
         ));
   }
-
-  static void Function() pressedInventory(Inventory item) {
-    void f(){
-      print(item.id);
-    }
-    return f;
-  }
-  Widget EmptyList() => Text('Пока наград нет');
 }
