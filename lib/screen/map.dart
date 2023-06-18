@@ -59,13 +59,14 @@ class _MapPageState extends State<MapPage> {
             final mapObject = PlacemarkMapObject(
                 mapId: mapObjectId,
                 point: point,
+                opacity: 1,
                 onTap: (PlacemarkMapObject self, Point point) => print('Tapped me at $point'),
                 isDraggable: true,
                 onDragStart: (_) => print('Drag start'),
                 onDrag: (_, Point point) => print('Drag at point $point'),
                 onDragEnd: (_) => print('Drag end'),
                 icon: PlacemarkIcon.single(PlacemarkIconStyle(
-                    image: BitmapDescriptor.fromAssetImage('assets/place.png')
+                    image: BitmapDescriptor.fromAssetImage('assets/ok_normal.png')
                 ))
             );
             setState(() {
