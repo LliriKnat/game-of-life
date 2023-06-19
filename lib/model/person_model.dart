@@ -24,6 +24,7 @@ class Person {
     int? exp,
   }) =>
       Person(
+          id: id ?? this.id,
           name: name ?? this.name,
           stamina: stamina ?? this.stamina,
           exp: exp ?? this.exp);
