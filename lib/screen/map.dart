@@ -68,7 +68,7 @@ class _MapPageState extends State<MapPage> {
                 onDrag: (_, Point point) => print('Drag at point $point'),
                 onDragEnd: (_) => print('Drag end'),
                 icon: PlacemarkIcon.single(PlacemarkIconStyle(
-                    image: BitmapDescriptor.fromAssetImage('assets/ok_normal.png')
+                    image: BitmapDescriptor.fromAssetImage('assets/place.png')
                 ))
             );
             setState(() {
