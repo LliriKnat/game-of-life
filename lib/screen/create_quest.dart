@@ -52,7 +52,7 @@ class _create_questPageState extends State<create_quest> {
                     color: Colors.blue))
           ],
         ),
-        body: Column(
+        body: ListView(
           children: [
             Form(
               key: _formKey,
