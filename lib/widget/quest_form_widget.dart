@@ -15,9 +15,7 @@ class QuestFormWidget extends StatelessWidget {
   final ValueChanged onChangeDifficulty;
   final ValueChanged<String> onChangeDate;
   final ValueChanged<String> onChangeTime;
-  final ValueChanged<String> onChangePlace;
   final ValueChanged onChangeReward;
-  String? place;
   final String? status;
   final String? date;
   final String? time;
@@ -34,9 +32,9 @@ class QuestFormWidget extends StatelessWidget {
     required this.onChangeDifficulty,
     required this.onChangeDate,
     required this.onChangeTime,
-    required this.onChangePlace,
+
     required this.onChangeReward,
-    this.place = '',
+
     this.status = '',
     this.date = '',
     this.time = '',
@@ -91,7 +89,6 @@ class QuestFormWidget extends StatelessWidget {
                 ],
               ),
             ),
-            buildPlace(context),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
@@ -245,41 +242,7 @@ class QuestFormWidget extends StatelessWidget {
         onChanged: onChangeTime,
       );
 
-  Widget buildPlace(BuildContext context) => TextFormField(
-        maxLength: 100,
-        maxLines: 1,
-        initialValue: place,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-        decoration: InputDecoration(
-          prefixIcon: ImageIcon(
-            AssetImage('assets/guide_normal.png'),
-            color: Colors.white,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0xff818181)),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0xff818181)),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          hintText: 'Место',
-        ),
-        onChanged: onChangePlace,
-        onTap: () async {
-          final dynamic _response =
-          await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => MapPage()),
-          );
-          place = _response["selectedPlace"];
-          print('TEST $place');
-          //Need to set state, when return from map screen
 
-          await QuestsDatabase.instance.readAllQuests('Задание создано');
-        },
-      );
 
   Widget buildReward() => DropdownButtonFormField(
       value: name_r,
