@@ -18,15 +18,22 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
   Quotes? data;
+
+  Future<Null> getQuotes() async {
+    data = await Api.getQuotes();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getQuotes();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    Future<Null> getQuotes() async {
-      data = await Api.getQuotes();
-      setState(() {});
-    }
 
     void Function() pressedInventory(Inventory item) {
       void f(){
@@ -189,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                                data?.content ?? "Keep on coding, baby!.",
+                                data?.content ?? "Keep on tapping, baby!.",
                                 textAlign: TextAlign.center),
                           ),
                         ),

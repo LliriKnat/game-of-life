@@ -3,6 +3,8 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:game_of_life/model/reward_model.dart';
 import 'package:game_of_life/data/quest_db.dart';
 
+import '../screen/map.dart';
+
 class QuestFormWidget extends StatelessWidget {
   final String? name;
   final String? summary;
@@ -15,7 +17,7 @@ class QuestFormWidget extends StatelessWidget {
   final ValueChanged<String> onChangeTime;
   final ValueChanged<String> onChangePlace;
   final ValueChanged onChangeReward;
-  final String? place;
+  String? place;
   final String? status;
   final String? date;
   final String? time;
@@ -89,7 +91,7 @@ class QuestFormWidget extends StatelessWidget {
                 ],
               ),
             ),
-            buildPlace(),
+            buildPlace(context),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
@@ -243,7 +245,7 @@ class QuestFormWidget extends StatelessWidget {
         onChanged: onChangeTime,
       );
 
-  Widget buildPlace() => TextFormField(
+  Widget buildPlace(BuildContext context) => TextFormField(
         maxLength: 100,
         maxLines: 1,
         initialValue: place,
@@ -266,6 +268,17 @@ class QuestFormWidget extends StatelessWidget {
           hintText: 'Место',
         ),
         onChanged: onChangePlace,
+        onTap: () async {
+          final dynamic _response =
+          await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => MapPage()),
+          );
+          place = _response["selectedPlace"];
+          print('TEST $place');
+          //Need to set state, when return from map screen
+
+          await QuestsDatabase.instance.readAllQuests('Задание создано');
+        },
       );
 
   Widget buildReward() => DropdownButtonFormField(

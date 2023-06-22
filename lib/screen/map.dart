@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:game_of_life/screen/create_quest.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import 'map/app_lat_long.dart';
@@ -31,6 +32,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  var set_point = null;
   final mapControllerCompleter = Completer<YandexMapController>();
   final List<MapObject> mapObjects = [];
   final MapObjectId mapObjectId = MapObjectId(Uuid().v1());
@@ -70,9 +72,10 @@ class _MapPageState extends State<MapPage> {
                 ))
             );
             setState(() {
+              set_point = mapObject.point.latitude.toString() + ';' + mapObject.point.longitude.toString();
               mapObjects.add(mapObject);
             });
-            //print(mapObjects);
+            //print(mapObject.point);
           }
       ),
       floatingActionButton: Row(
@@ -80,7 +83,13 @@ class _MapPageState extends State<MapPage> {
         children: [
           FloatingActionButton(
               child: Icon(Icons.add),
-              onPressed: _addMark)
+              onPressed: () {
+                print(set_point);
+                Navigator.pop(
+                  context,
+                  {"selectedPlace":set_point},
+                );
+              })
         ],
       ),
     );
