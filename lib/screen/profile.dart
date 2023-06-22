@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: 170,
                         height: 45,
                         color: const Color(0xff4180BA),
-                        child: const Row(
+                        child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
