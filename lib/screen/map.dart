@@ -89,6 +89,11 @@ class _MapPageState extends State<MapPage> {
                   context,
                   {"selectedPlace":set_point},
                 );
+              }),
+          FloatingActionButton(
+              child: Icon(Icons.accessibility),
+              onPressed: () {
+                _setCamera();
               })
         ],
       ),
@@ -99,7 +104,7 @@ class _MapPageState extends State<MapPage> {
   //
   // await controller.deselectGeoObject();
   //}
-  Future<void> _addMark() async {
+  Future<void> _setCamera() async {
 
     await _fetchCurrentLocation();
   }

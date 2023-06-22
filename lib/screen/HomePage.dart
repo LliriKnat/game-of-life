@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:game_of_life/screen/show_points_map.dart';
 import 'Stats.dart';
 import 'quests.dart';
 import 'settings.dart';
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Основная страница с текущим заданием и инвентарем
     ProfileScreen(),
     // Страница 2
-    MapPage(),
+    PointsMapPage(),
     // Страница создания квестов а так же расстановки их в расспсание
     quests_page(),
     // ...
