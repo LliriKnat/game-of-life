@@ -105,6 +105,8 @@ class _create_questPageState extends State<create_quest> {
   }
 
   Future addQuest() async {
+    // final point = ModalRoute.of(context)!.settings.arguments;
+    print('AAAAAA $place');
     final quest = Quest(
         name: name,
         summary: summary,
