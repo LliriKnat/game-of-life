@@ -3,6 +3,8 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:game_of_life/model/reward_model.dart';
 import 'package:game_of_life/data/quest_db.dart';
 
+import '../screen/map.dart';
+
 class QuestFormWidget extends StatelessWidget {
   final String? name;
   final String? summary;
@@ -13,9 +15,7 @@ class QuestFormWidget extends StatelessWidget {
   final ValueChanged onChangeDifficulty;
   final ValueChanged<String> onChangeDate;
   final ValueChanged<String> onChangeTime;
-  final ValueChanged<String> onChangePlace;
   final ValueChanged onChangeReward;
-  final String? place;
   final String? status;
   final String? date;
   final String? time;
@@ -32,9 +32,9 @@ class QuestFormWidget extends StatelessWidget {
     required this.onChangeDifficulty,
     required this.onChangeDate,
     required this.onChangeTime,
-    required this.onChangePlace,
+
     required this.onChangeReward,
-    this.place = '',
+
     this.status = '',
     this.date = '',
     this.time = '',
@@ -89,7 +89,6 @@ class QuestFormWidget extends StatelessWidget {
                 ],
               ),
             ),
-            buildPlace(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
@@ -243,30 +242,7 @@ class QuestFormWidget extends StatelessWidget {
         onChanged: onChangeTime,
       );
 
-  Widget buildPlace() => TextFormField(
-        maxLength: 100,
-        maxLines: 1,
-        initialValue: place,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-        decoration: InputDecoration(
-          prefixIcon: ImageIcon(
-            AssetImage('assets/guide_normal.png'),
-            color: Colors.white,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0xff818181)),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0xff818181)),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          hintText: 'Место',
-        ),
-        onChanged: onChangePlace,
-      );
+
 
   Widget buildReward() => DropdownButtonFormField(
       value: name_r,

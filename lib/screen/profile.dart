@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:game_of_life/data/quest_db.dart';
 import 'package:game_of_life/model/inventory_model.dart';
-import 'package:game_of_life/model/person_model.dart';
 import 'package:game_of_life/model/quest_model.dart';
 import 'package:game_of_life/screen/text_api/text_api.dart';
 import 'package:game_of_life/screen/text_api/text_model.dart';
 import 'package:game_of_life/widget/current_quest_card.dart';
 
 import '../widget/item_widget.dart';
+import '../widget/quest_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -18,20 +18,27 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
   Quotes? data;
+
+  Future<Null> getQuotes() async {
+    data = await Api.getQuotes();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getQuotes();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Future<Null> getQuotes() async {
-      data = await Api.getQuotes();
-      setState(() {});
-    }
 
     void Function() pressedInventory(Inventory item) {
-      void f() {
+      void f(){
         print(item.id);
       }
-
       return f;
     }
 
@@ -202,8 +209,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.white,
                       fit: BoxFit.fitWidth,
                       alignment: AlignmentDirectional.center,
+
                     ),
                     const Spacer(),
+
                     Column(children: [
                       /// блок цитатника
 
@@ -226,11 +235,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                                data?.content ?? "Keep on coding, baby!.",
+                                data?.content ?? "Keep on tapping, baby!.",
                                 textAlign: TextAlign.center),
                           ),
                         ),
                       ),
+
 
                       /// Инвентарь
                       Padding(

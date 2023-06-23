@@ -90,6 +90,8 @@ flutter:
     - assets/calendar_normal.png
     - assets/clock2_normal.png
     - assets/guide_normal.png
+    - assets/POI2_normal.png
+    - assets/place.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
