@@ -147,10 +147,6 @@ class CurrentQuestCard extends StatelessWidget {
         }
       }
     }
-
-
-
-
   }
 
   Future<void> _info_Builder(
@@ -158,12 +154,12 @@ class CurrentQuestCard extends StatelessWidget {
     return showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              titlePadding: EdgeInsets.all(20),
-              contentPadding: EdgeInsets.all(3),
-              backgroundColor: Color(0xff2D2D2D),
+              titlePadding: const EdgeInsets.all(20),
+              contentPadding: const EdgeInsets.all(3),
+              backgroundColor: const Color(0xff2D2D2D),
               title: Container(child: Text(name, textAlign: TextAlign.center)),
               content: Container(
-                  constraints: BoxConstraints(minHeight: 200),
+                  constraints: const BoxConstraints(minHeight: 200),
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     boxShadow: [

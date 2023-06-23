@@ -149,8 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return LinearProgressIndicator(
                                     color: Colors.lightGreen,
                                     backgroundColor: Colors.black26,
-                                    value:
-                                    pers.data!.exp.toDouble() / 200,
+                                    value: pers.data!.exp.toDouble() / 200,
                                   );
                                 } else {
                                   return const LinearProgressIndicator(
