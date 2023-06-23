@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:game_of_life/data/quest_db.dart';
@@ -7,8 +8,10 @@ import 'package:game_of_life/screen/text_api/text_api.dart';
 import 'package:game_of_life/screen/text_api/text_model.dart';
 import 'package:game_of_life/widget/current_quest_card.dart';
 
+import '../model/person_model.dart';
 import '../widget/item_widget.dart';
 import '../widget/quest_card.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -18,13 +21,18 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   Quotes? data;
+  TyperAnimatedText? anim;
 
+  List<AnimatedText> animatedList = [ TyperAnimatedText('No') ];
+
+  @override
   Future<Null> getQuotes() async {
     data = await Api.getQuotes();
     setState(() {});
   }
+
+
 
   @override
   void initState() {
@@ -85,7 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Padding(
                                 padding: EdgeInsets.all(10.0),
                                 child: ImageIcon(AssetImage("assets/info.png"),
-                                    size: 28.0, color: Colors.white),
+                                    size: 28.0,
+                                    color: Colors.white),
                               ),
                               Text('Player', style: TextStyle(fontSize: 18))
                             ]),
@@ -218,8 +227,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       GestureDetector(
                         onTap: () {
-                          //print("Click event on Container");
+                          // print("Click event on Container");
                           getQuotes();
+                          // print(data?.content ?? "Keep on tapping, baby!.");
+
                         },
                         child: Container(
                           width: 200,
