@@ -55,12 +55,12 @@ class QuestsDatabase {
     ''');
     /// CREATE TABLE tablePerson
     await db.execute('''
-    CREATE TABLE $tablePerson (
-    ${PersonFields.id} $idType,
-    ${PersonFields.name} $nameType,
-    ${PersonFields.stamina} $integerType,
-    ${PersonFields.exp} $integerType   
-    )
+      CREATE TABLE $tablePerson (
+      ${PersonFields.id} $idType,
+      ${PersonFields.name} $nameType,
+      ${PersonFields.stamina} $integerType,
+      ${PersonFields.exp} $integerType   
+      )
     ''');
     /// CREATE TABLE tableReward
     await db.execute('''
@@ -69,28 +69,31 @@ class QuestsDatabase {
       ${RewardFields.name_r} $nameType,
       ${RewardFields.coeff} $integerType
       )
-      ''');
+    ''');
     /// CREATE TABLE tableInventory
     await db.execute('''
-    CREATE TABLE $tableInventory (
-    ${InventoryFields.id} $idType,
-    ${InventoryFields.id_reward} $integerType,
-    ${InventoryFields.id_person} $integerType,
-    ${InventoryFields.count} $integerType
-    )
+      CREATE TABLE $tableInventory (
+      ${InventoryFields.id} $idType,
+      ${InventoryFields.id_reward} $integerType,
+      ${InventoryFields.id_person} $integerType,
+      ${InventoryFields.count} $integerType
+      )
     ''');
 
     // Костыльное добавление наград
     await db.rawInsert(
-        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ("Посмотреть ютубчик", 30)''');
+        '''INSERT INTO $tablePerson (${PersonFields.name}, ${PersonFields.stamina}, ${PersonFields.exp}) VALUES ('Player', 100, 10)''');
+
     await db.rawInsert(
-        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ("Поиграть в игры", 30)''');
+        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ('Посмотреть ютубчик', 30)''');
     await db.rawInsert(
-        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ("Купить вкусняшку", 1)''');
+        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ('Поиграть в игры', 30)''');
     await db.rawInsert(
-        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ("Погулять", 1)''');
+        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ('Купить вкусняшку', 1)''');
     await db.rawInsert(
-        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ("Поспать", 4)''');
+        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ('Погулять', 1)''');
+    await db.rawInsert(
+        '''INSERT INTO $tableReward (${RewardFields.name_r}, ${RewardFields.coeff}) VALUES ('Поспать', 4)''');
 
     await db.rawInsert(
         '''INSERT INTO $tableInventory (${InventoryFields.id_reward}, ${InventoryFields.id_person}, ${InventoryFields.count}) VALUES (0, 0, 0)''');
@@ -201,7 +204,17 @@ class QuestsDatabase {
     }
   }
 
-  // ###################### Reward #############################################
+  Future<int> update_person(Person person) async {
+    final db = await instance.database;
+    return db.update(
+      tablePerson,
+      person.toJson(),
+      where: '${PersonFields.id} = ?',
+      whereArgs: [person.id],
+    );
+  }
+
+  /// ###################### Reward #############################################
 
   Future<Reward> create_reward(Reward reward) async {
     final db = await instance.database;
@@ -234,8 +247,6 @@ class QuestsDatabase {
     final result = await db.query(
         tableInventory,
         orderBy: orderBy);
-        // where: '${InventoryFields.id_person} = ?',
-        // whereArgs: [idPerson]);
     return result.map((json) => Inventory.fromJson(json)).toList();
   }
 
@@ -245,7 +256,7 @@ class QuestsDatabase {
     return inventory.copy(id: id);
   }
 
-  Future<int> update_inventory(Inventory inventory) async{
+  Future<int>   update_inventory(Inventory inventory) async{
     final db = await instance.database;
     return db.update(
       tableInventory,

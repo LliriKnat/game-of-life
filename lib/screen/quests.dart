@@ -89,5 +89,6 @@ class _quests_pageState extends State<quests_page> {
   }
 
   Widget EmptyList() {
-    return Text('Пока квестов нет !!!');}
+    return Text('Пока квестов нет !!!');
+  }
 }

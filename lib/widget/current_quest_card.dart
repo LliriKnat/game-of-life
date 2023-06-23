@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:game_of_life/model/quest_model.dart';
+import 'package:game_of_life/model/reward_model.dart';
 
 import '../data/quest_db.dart';
+import '../model/inventory_model.dart';
+import '../model/person_model.dart';
 
 class CurrentQuestCard extends StatelessWidget {
   CurrentQuestCard({
@@ -104,11 +107,7 @@ class CurrentQuestCard extends StatelessWidget {
               ],
             )).then((value) {
       if (value == 'OK') {
-
-        void endMission() async {
-          var quest = this.quest.copy(status: 'sadjd');
-          await QuestsDatabase.instance.update(quest);
-        }
+        endMission();
 
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Задание завершено')));
@@ -116,19 +115,53 @@ class CurrentQuestCard extends StatelessWidget {
     });
   }
 
+  Reward check_reward(Inventory i, List<Reward> rewards){
+    for (Reward reward in rewards){
+      if (i.id_reward + 1 == reward.id){
+          return reward;
+      }
+    }
+    throw Exception('reward ${i.id_reward} not found');
+  }
+  void endMission() async {
+    List<Inventory> inventorys = await QuestsDatabase.instance.readInventory(1);
+    List<Reward> rewards = await QuestsDatabase.instance.readAllRewards();
+
+    for (Reward rew in rewards){
+      if (rew.name_r == quest.name_r){
+        for (Inventory inv in inventorys){
+          if (inv.id_reward == rew.id){
+            int? count = inv.count + rew.coeff!;
+            Inventory i = inv.copy(count: count);
+            await QuestsDatabase.instance.update_inventory(i);
+
+            var q = quest.copy(status: 'Закрыто');
+            await QuestsDatabase.instance.update(q);
+
+            Person person = await QuestsDatabase.instance.readPerson(1);
+            Person p = person.copy(exp: person.exp + 1, stamina: person.stamina - 15);
+            await QuestsDatabase.instance.update_person(p);
+
+            return;
+          }
+        }
+      }
+    }
+  }
+
   Future<void> _info_Builder(
       BuildContext context, name, summary, status, date, time, difficulty) {
     return showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              titlePadding: EdgeInsets.all(20),
-              contentPadding: EdgeInsets.all(3),
-              backgroundColor: Color(0xff2D2D2D),
+              titlePadding: const EdgeInsets.all(20),
+              contentPadding: const EdgeInsets.all(3),
+              backgroundColor: const Color(0xff2D2D2D),
               title: Container(child: Text(name, textAlign: TextAlign.center)),
               content: Container(
-                  constraints: BoxConstraints(minHeight: 200),
+                  constraints: const BoxConstraints(minHeight: 200),
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(color: Colors.black54, blurRadius: 9.0),
                       BoxShadow(

@@ -19,6 +19,7 @@ class ItemWidget extends StatelessWidget {
         // padding: EdgeInsets.zero,
         onPressed:
             () async {
+          print(item_counts);
           var new_count = this.item.count-item_counts[this.item.id!.toInt()-1];
           if (new_count < 0){
             new_count = 0;
@@ -32,7 +33,7 @@ class ItemWidget extends StatelessWidget {
       );
   }
 
-  static List<int> item_counts = <int>[1, 1, 30, 30, 4];
+  static List<int> item_counts = <int>[1, 30, 30, 1, 4];
 
 }
 
